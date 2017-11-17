@@ -10,7 +10,7 @@
         controller: 'ReportCtrl',
         controllerAs: 'report',
         data: {
-          pageTitle: 'Report'
+          pageTitle: ''
         },
         resolve: {
           loadPlugin: [ '$ocLazyLoad', function ($ocLazyLoad) {
