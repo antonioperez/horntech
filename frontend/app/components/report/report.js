@@ -17,7 +17,6 @@
         name: 'csvOnly',
         // A user-defined filter
         fn: function (item) {
-          console.log(item);
           if (item.type != 'text/csv') {
             $scope.errorMessage = "CSV Files Only!";
             return false;
@@ -27,11 +26,10 @@
       }]
     });
 
-    var recentFilesRef = {};
-    $scope.uploadedFiles = [];
+    $scope.dataRows = [];
     $scope.errorMessage = "";
 
-    function writeUserData(userId, filename, size, downloadUrl, lastModified) {
+    function createPdf(userId, filename, size, downloadUrl, lastModified) {
       //fancy hashing algorithm goes here
 
     }
@@ -42,7 +40,22 @@
       //BECAUSE IT IS SENDING TO A LOCAL PORT/URL. NEED TO SEND TO FIREBASE INSTEAD
       var self = this;
       var file = value._file;
-
+      
+      Papa.parse(file, {
+        delimiter: ";",
+        worker: true,
+        skipEmptyLines: true,
+        step: function(results) {
+          
+          var row = results.data[0].filter(function(x){
+            y = $.trim(x);
+            return (y !== (undefined || null ));
+          });
+          
+          $scope.dataRows.push(row);
+          $scope.$apply();
+        }
+      });
 
       var index = this.getIndexOfItem(value);
       var item = this.queue[index];
