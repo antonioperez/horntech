@@ -6,11 +6,11 @@
 
   function config($stateProvider) {
     $stateProvider
-      .state('index.chat', {
-        controller: 'ChatRoomCtrl',
-        controllerAs: 'chatroom',
+      .state('report', {
+        controller: 'ReportCtrl',
+        controllerAs: 'report',
         data: {
-          pageTitle: 'Chat'
+          pageTitle: 'Report'
         },
         resolve: {
           loadPlugin: [ '$ocLazyLoad', function ($ocLazyLoad) {
@@ -52,8 +52,8 @@
             ]);
           }]
         },
-        templateUrl: "components/chat/chat.html",
-        url: "/chat",
+        templateUrl: "components/report/report.html",
+        url: "/report",
       })
   }
 

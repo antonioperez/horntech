@@ -8,7 +8,6 @@
     
     var self = this;
 
-    
   }
 
   angular.module('app')

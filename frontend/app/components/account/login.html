@@ -2,7 +2,7 @@
   <div class="middle-box text-center animated fadeInDown row">
     <div class="form-card">
       <div class="text-center">
-        <img class="" src="components/layout/logo.png" />
+       
       </div>
       <br>
       <div class="alert alert-danger" ng-show="errorMessage">
@@ -15,26 +15,9 @@
         <div class="form-group">
           <input type="password" class="form-control login-input" placeholder="Password" required ng-model="password">
         </div>
-        <button class="btn btn-primary block full-width m-b login-button" ng-click="signIn()">
+        <button class="btn btn-primary block full-width m-b login-button" ui-sref="index.basinmapper">
           Login
         </button>
-        <h3 class="text-center">Or Login with</h3>
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-            <div class="col-md-6">
-              <a href="#" class="btn btn-lg fb-blue btn-primary btn-block" ng-click="socialLogin('facebook');">Facebook</a>
-              <br>
-            </div>
-            <!-- <div class="col-md-4">
-              <a href="#" class="btn btn-lg btn-info btn-block" ng-click="socialLogin('twitter');">Twitter</a>
-              <br>
-            </div> -->
-            <div class="col-md-6">
-              <a href="#" class="btn btn-lg btn-danger btn-block" ng-click="socialLogin('google');">Google</a>
-              <br>
-            </div>
-          </div>
-        </div>
         <hr>
         <a ui-sref="forgot_password">
           <small>Forgot password?</small>

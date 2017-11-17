@@ -9,13 +9,13 @@
     .run(['$rootScope', '$state', '$cookies', statesConfig]);
 
   function config($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/login");
+    $urlRouterProvider.otherwise("/report");
     $stateProvider
-      .state('index', {
-        abstract: true,
-        url: "/index",
-        templateUrl: "components/layout/content.html",
-      })
+    .state('index', {
+      abstract: true,
+      url: "/index",
+      templateUrl: "components/layout/content.html",
+    })
   }
 
   function statesConfig ($rootScope, $state, $cookies) {
