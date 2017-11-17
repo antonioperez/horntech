@@ -1,0 +1,56 @@
+<div class="" ng-controller="ChatRoomCtrl as chatRoom">
+  <nav class="navbar navbar-static-top white-bg m-b-0 " role="navigation">
+    
+      <span minimaliza-sidebar></span>
+      <ul class="nav navbar-top-links pull-left " uib-dropdown>
+        <li uib-dropdown-toggle>
+          <a class="">
+              {{chatRoom.activeRoom.name | capitalizeWord}} <i class="logout-dropdown icon ion-chevron-down"></i>
+          </a>
+        </li>
+        <ul uib-dropdown-menu class="animated fadeInRight m-t-xs" >
+            <li data-ng-repeat="(key, room) in chatRoom.rooms">
+              <a ng-show="room.name !== chatRoom.activeRoom.name" ng-click = "chatRoom.changeRooms(room.name);" ui-sref="index.chat">{{room.name}}</a>
+            </li>
+        </ul>
+      </ul>   
+  
+   
+      <ul class="nav navbar-top-links pull-right" uib-dropdown>
+        <li uib-dropdown-toggle>
+          <a>
+            <img class="message-avatar" ng-show="chatRoom.currentUser.photoURL" ng-src="{{chatRoom.currentUser.photoURL}}" alt="">     
+            {{chatRoom.currentUser.displayName}} <i class="logout-dropdown icon ion-chevron-down"></i>
+          </a>
+        </li>
+        <ul uib-dropdown-menu class="animated fadeInRight m-t-xs">
+            <li class="visible-xs visible-sm"><a ui-sref="index.chat">Profile</a></li>
+            <li class="visible-xs visible-sm"><a ui-sref="index.chat">Chat</a></li>
+            <li class="visible-xs visible-sm" class="divider"></li>
+            <li ng-controller="AccountCtrl"><a ng-click="signOut()">Logout</a></li>
+        </ul>
+      </ul>
+   
+  </nav>
+</div>
+<div class="row" data-ng-hide="true">
+  <nav class="navbar navbar-static-top sub-nav white-bg margin-bottom-0">
+    <ul class="nav navbar-top-links">
+      <li>
+        <a>Profile</a>
+      </li>
+      <li>
+        <a>Company</a>
+      </li>
+      <li>
+        <a>Email</a>
+      </li>
+      <li>
+        <a>Integrations</a>
+      </li>
+      <li>
+        <a>Billing</a>
+      </li>
+    </ul>
+  </nav>
+</div>

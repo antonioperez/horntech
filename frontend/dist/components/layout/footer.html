@@ -1,0 +1,12 @@
+<div class="footer" ng-controller="ChatMessageCtrl as chatMessage" nv-file-drop="" dropzone="" uploader="chatMessage.uploader"> <div class="chat-message-form"> <input type="file" nv-file-select="" uploader="chatMessage.uploader" class="hidden" id="js-file-selector"> <form class="dz-clickable" id="dropzone"> <div class="row" ng-repeat="item in chatMessage.uploader.queue"> <div class="col-xs-11"> <span> <strong>{{ item.file.name }}</strong> </span> <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess"> <span class="glyphicon glyphicon-upload"></span> Upload </button> <span ng-show="chatMessage.uploader.progress">{{chatMessage.uploader.progress}}%</span> <br><br> </div> </div> <div class="row"> <div class="col-xs-11"> <div id="summernote" name="value"></div> </div> <div class="col-xs-1"> <div class="row"> <button ng-click="chatMessage.saveMessage()" class="btn btn-md btn-primary"> <span class="glyphicon glyphicon-envelope"></span>&nbsp;Send</button> <br> </div> <div class="row"> <br> <button onclick="$('#js-file-selector').click()" class="btn btn-md btn-default"> <span class="glyphicon glyphicon-upload"></span>&nbsp;File</button> </div> </div> <script>$(document).ready(function () {
+                        $('#summernote').summernote({
+                            height: 50, // set editor height
+                            focus: false,
+                            toolbar: [
+                                ['style', ['bold', 'underline', 'clear']],
+                                ['para', ['ul', 'ol']],
+                                ['insert', ['link']],
+                                ['misc', ['fullscreen']]
+                            ]
+                        });
+                    });</script> </div> </form> </div> </div>
