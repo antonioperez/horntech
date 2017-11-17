@@ -1,7 +1,6 @@
 # forexfamily
 the forex family internal chat app
 
-
 To run the app:
 
   **Note:** you will need npm, bower, and grunt installed on your machine
