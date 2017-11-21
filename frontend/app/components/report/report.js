@@ -11,7 +11,6 @@
 
   function Ctrl($http, $scope, FileUploader) {
 
-
     var uploader = $scope.uploader = new FileUploader({
       filters: [{
         name: 'csvOnly',
@@ -28,6 +27,7 @@
 
     $scope.dataRows = [];
     $scope.errorMessage = "";
+    $scope.activeView = "components/report/subviews/upload.html";
 
     function createPdf(userId, filename, size, downloadUrl, lastModified) {
       //fancy hashing algorithm goes here
@@ -40,7 +40,7 @@
       //BECAUSE IT IS SENDING TO A LOCAL PORT/URL. NEED TO SEND TO FIREBASE INSTEAD
       var self = this;
       var file = value._file;
-      
+
       Papa.parse(file, {
         delimiter: ";",
         worker: true,
