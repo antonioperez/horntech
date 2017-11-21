@@ -27,6 +27,7 @@
 
     $scope.dataRows = [];
     $scope.errorMessage = "";
+    $scope.activeKey = 0;
 
     $scope.map = [
       {
@@ -34,16 +35,24 @@
         template : "components/report/subviews/upload.html"
       },
       {
-        key: "fumiForm",
-        template : "components/report/subviews/upload.html"
+        key: "data",
+        template : "components/report/subviews/data.html"
       }, 
       {
-        key: "report",
+        key: "output",
+        template : "components/report/subviews/output.html"
+      }, 
+      {
+        key: "fumiform",
         template : "components/report/subviews/upload.html"
+      },
+      {
+        key: "pdfpreview",
+        template : "components/report/subviews/pdfpreview.html"
       }
     ];
 
-    $scope.activeView = $scope.map[0];
+    $scope.activeView = $scope.map[$scope.activeKey];
 
     function createPdf(userId, filename, size, downloadUrl, lastModified) {
       //fancy hashing algorithm goes here
@@ -68,10 +77,30 @@
             return (y !== (undefined || null ));
           });
           
+          row[0] = new Date(row[0] + " " + row[1]);
+          row[2] = parseInt(row[2].replace(/,/g, '.'));
+          row[3] = parseInt(row[3].replace(/,/g, '.'));
+          row[4] = parseInt(row[4].replace(/,/g, '.'));
+          
+          if (isNaN(row[2])) {
+            row[2] = '';
+          }
+
+          if (isNaN(row[3])) {
+            row[3] = '';
+          }
+
+          if (isNaN(row[4])) {
+            row[4] = '';
+          }
+
           $scope.dataRows.push(row);
           $scope.$apply();
         }
       });
+
+      $scope.activeKey += 1;
+      $scope.activeView = $scope.map[$scope.activeKey];
 
       var index = this.getIndexOfItem(value);
       var item = this.queue[index];
