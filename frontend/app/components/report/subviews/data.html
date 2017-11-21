@@ -3,7 +3,6 @@
         <p>
             Click on the zones you want in the report. If none selected, all zones will be used in the report.
         </p>
-
         <button type="submit" class="btn btn-success block m-b pull-right" ng-click="generateReport()">Generate Report</button>
     </div>
     <div class="row">
@@ -14,19 +13,19 @@
                     <th>
                         <label class="i-checks">
                             Zone 1
-                            <input icheck type="checkbox" value="option1">
+                            <input icheck type="checkbox" ng-model="zoneModel.zone1" >
                         </label>
                     </th>
                     <th>
                         <label class="i-checks">
-                            Zone 1
-                            <input icheck type="checkbox" value="option1">
+                            Zone 2
+                            <input icheck type="checkbox" ng-model="zoneModel.zone2">
                         </label>
                     </th>
                     <th>
                         <label class="i-checks">
-                            Zone 1
-                            <input icheck type="checkbox" value="option1">
+                            Zone 3
+                            <input icheck type="checkbox" ng-model="zoneModel.zone3">
                         </label>
                     </th>
                 </tr>
@@ -41,4 +40,6 @@
             </tbody>
         </table>
     </div>
+
+
 </div>
