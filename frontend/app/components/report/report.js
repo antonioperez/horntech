@@ -27,7 +27,23 @@
 
     $scope.dataRows = [];
     $scope.errorMessage = "";
-    $scope.activeView = "components/report/subviews/upload.html";
+
+    $scope.map = [
+      {
+        key: "uploader",
+        template : "components/report/subviews/upload.html"
+      },
+      {
+        key: "fumiForm",
+        template : "components/report/subviews/upload.html"
+      }, 
+      {
+        key: "report",
+        template : "components/report/subviews/upload.html"
+      }
+    ];
+
+    $scope.activeView = $scope.map[0];
 
     function createPdf(userId, filename, size, downloadUrl, lastModified) {
       //fancy hashing algorithm goes here
