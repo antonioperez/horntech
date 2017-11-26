@@ -35,9 +35,14 @@
       zone3: false
     };
 
+    $scope.xAxis = [];
+    $scope.zone1 = [];
+    $scope.zone2 = [];
+    $scope.zone3 = [];
+
     $scope.map = [{
         key: "uploader",
-        template: "components/report/subviews/output.html"
+        template: "components/report/subviews/upload.html"
       },
       {
         key: "data",
@@ -58,11 +63,6 @@
     function createPdf(userId, filename, size, downloadUrl, lastModified) {
       //fancy hashing algorithm goes here
 
-    };
-
-    $scope.generateReport = function () {
-      $scope.activeKey += 1;
-      $scope.activeView = $scope.map[$scope.activeKey];
     };
 
     uploader.uploadItem = function (value) {
@@ -88,15 +88,15 @@
           row[4] = parseInt(row[4].replace(/,/g, '.'));
 
           if (isNaN(row[2])) {
-            row[2] = '';
+            row[2] = 0;
           }
 
           if (isNaN(row[3])) {
-            row[3] = '';
+            row[3] = 0;
           }
 
           if (isNaN(row[4])) {
-            row[4] = '';
+            row[4] = 0;
           }
 
           $scope.dataRows.push(row);
@@ -121,14 +121,18 @@
     };
 
     uploader.onCompleteAll = function () {
+      console.log("complete");
+      
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
     };
 
     $scope.lineData = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      //labels: [0,20,40,60,80,100,120,140,160,180,200],
+      labels: $scope.xAxis,
       datasets: [{
           label: "Zone 1",
+          type: 'line',
           fillColor: "rgba(220,220,220,0.5)",
           strokeColor: "rgba(220,220,220,1)",
           pointColor: "rgba(220,220,220,1)",
@@ -137,24 +141,61 @@
           pointHighlightFill: "#fff",
           backgroundColor: "#d3d3d3",
           pointHighlightStroke: "rgba(220,220,220,1)",
-          data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-          label: "Zone 2",
-          fillColor: "rgba(26,179,148,0.5)",
-          strokeColor: "rgba(26,179,148,0.7)",
-          pointColor: "rgba(26,179,148,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(26,179,148,1)",
-          data: [28, 48, 40, 19, 86, 27, 90]
+          data: $scope.zone1
         }
+        // {
+        //   label: "Zone 2",
+        //   type: 'line',
+        //   fillColor: "rgba(26,179,148,0.5)",
+        //   strokeColor: "rgba(26,179,148,0.7)",
+        //   pointColor: "rgba(26,179,148,1)",
+        //   pointStrokeColor: "#fff",
+        //   pointHighlightFill: "#fff",
+        //   pointHighlightStroke: "rgba(26,179,148,1)",
+        //   data: $scope.zone2
+        // }     
       ]
     };
 
     $scope.lineOptions = {
-     
+      scales: {
+        scales: {
+					xAxes: [{
+						type: 'time',
+						distribution: 'series',
+						ticks: {
+							source: 'labels'
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'PPM'
+						}
+					}]
+				}
+      },
       datasetFill: false
+    };
+
+    $scope.generateReport = function () {
+      
+      $scope.dataRows.forEach(function(data) {
+        $scope.xAxis.push(data[0].valueOf());
+        $scope.zone1.push({
+          y: data[2],
+          t: data[0].valueOf(),
+        });
+        $scope.zone2.push({
+          y: data[3],
+          t: data[0].valueOf(),
+        });
+        
+        $scope.zone3.push(data[4]);
+      });
+
+      $scope.activeKey += 1;
+      $scope.activeView = $scope.map[$scope.activeKey];
     };
 
   }
