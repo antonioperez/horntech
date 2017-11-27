@@ -186,7 +186,7 @@
             },
             time: {
               unit: 'hour',
-              unitStepSize: 0.2,
+              unitStepSize: 0.5,
 						}
           }],
           yAxes: [{
