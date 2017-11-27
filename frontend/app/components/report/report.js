@@ -1,6 +1,17 @@
 (function () {
 
   angular
+  .module('app').directive('chart', function(){
+    return {
+        link: function(scope, elem, attrs){
+            console.log(scope.graphConfig);
+            var ctx = document.getElementById("graphOutput").getContext("2d");
+            window.myLine = new Chart(ctx, scope.graphConfig);
+        }
+    }
+  });
+
+  angular
     .module('app')
     .controller('ReportCtrl', [
       '$http',
@@ -121,7 +132,6 @@
     };
 
     uploader.onCompleteAll = function () {
-      console.log("complete");
       
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
@@ -132,65 +142,72 @@
       labels: $scope.xAxis,
       datasets: [{
           label: "Zone 1",
-          type: 'line',
-          fillColor: "rgba(220,220,220,0.5)",
-          strokeColor: "rgba(220,220,220,1)",
-          pointColor: "rgba(220,220,220,1)",
-          backgroundColor: "#000080",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          backgroundColor: "#d3d3d3",
-          pointHighlightStroke: "rgba(220,220,220,1)",
+          fill: false,
+          borderColor: "rgba(155,44,77,1)",
+          backgroundColor: "rgba(155,44,77,.5)",
           data: $scope.zone1
+        },
+        {
+          label: "Zone 2",
+          fill: false,
+          borderColor: "rgba(41,37,172,1)",
+          backgroundColor: "rgba(41,37,172,.5)",
+          data: $scope.zone2
+        },
+        {
+          label: "Zone 3",
+          fill: false,
+          borderColor: "rgba(88,172,75,1)",
+          backgroundColor: "rgba(88,172,75,.5)",
+          data: $scope.zone3
         }
-        // {
-        //   label: "Zone 2",
-        //   type: 'line',
-        //   fillColor: "rgba(26,179,148,0.5)",
-        //   strokeColor: "rgba(26,179,148,0.7)",
-        //   pointColor: "rgba(26,179,148,1)",
-        //   pointStrokeColor: "#fff",
-        //   pointHighlightFill: "#fff",
-        //   pointHighlightStroke: "rgba(26,179,148,1)",
-        //   data: $scope.zone2
-        // }     
+  
       ]
     };
 
-    $scope.lineOptions = {
-      scales: {
+    $scope.graphConfig = {
+      type: 'line',
+      responsive: true,
+      title:{
+        display:true,
+        text:"PH3 [PPM]"
+      },
+      data : $scope.lineData, 
+      options: {
         scales: {
-					xAxes: [{
-						type: 'time',
-						distribution: 'series',
+          xAxes: [{
+            type: "time",
+            distribution: 'series',
 						ticks: {
-							source: 'labels'
+              source: 'labels',
+              major: {
+                fontSize: "7"
+              }
+            },
+            time: {
+              unit: 'hour',
+              unitStepSize: 0.2,
 						}
-					}],
-					yAxes: [{
+          }],
+          yAxes: [{
 						scaleLabel: {
 							display: true,
-							labelString: 'PPM'
+							labelString: 'value'
 						}
 					}]
-				}
-      },
-      datasetFill: false
+        },
+        legend: {
+          position: 'bottom',
+        },
+      }
     };
 
     $scope.generateReport = function () {
       
       $scope.dataRows.forEach(function(data) {
-        $scope.xAxis.push(data[0].valueOf());
-        $scope.zone1.push({
-          y: data[2],
-          t: data[0].valueOf(),
-        });
-        $scope.zone2.push({
-          y: data[3],
-          t: data[0].valueOf(),
-        });
-        
+        $scope.xAxis.push(data[0]);
+        $scope.zone1.push(data[2]);
+        $scope.zone2.push(data[3]);
         $scope.zone3.push(data[4]);
       });
 
@@ -199,4 +216,5 @@
     };
 
   }
+
 })();
