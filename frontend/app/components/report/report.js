@@ -55,9 +55,9 @@
     }
 
     $scope.zoneModel = {
-      zone1: false,
-      zone2: false,
-      zone3: false
+      zone1: true,
+      zone2: true,
+      zone3: true
     };
 
     $scope.xAxis = [];
@@ -96,6 +96,22 @@
           }
         } 
       }
+
+      var canvas = document.getElementById('graphOutput');
+      var ctx = canvas.getContext('2d');
+      var imgData = canvas.toDataURL();
+
+      var pageWidth = 900;
+      var pageHeigth = 1000;
+
+      fumiForm.content.push({
+        image: imgData,
+        pageBreak: 'after',
+        width: pageWidth/1.8, 
+        height: pageHeigth / 1.5
+      });
+
+      fumiForm.content.push(rawDataTable);
       pdfMake.createPdf(fumiForm).open();
     };
 
@@ -116,10 +132,8 @@
             return (y !== (undefined || null));
           });
 
-        
-          var date = moment(row[0] + " " + row[1],'DD.MM.YY h:mm:ss').format()
-          row[0] = new Date(date);
-          row[0] = date;
+          var date = moment(row[0] + " " + row[1],'DD.MM.YY h:mm:ss')
+          row[0] = date.format('LLL');
           row[2] = parseInt(row[2].replace(/,/g, '.'));
           row[3] = parseInt(row[3].replace(/,/g, '.'));
           row[4] = parseInt(row[4].replace(/,/g, '.'));
@@ -135,7 +149,8 @@
           if (isNaN(row[4])) {
             row[4] = 0;
           }
-
+          var dataRow = [date.format('LLL'), row[2], row[3], row[4]];
+          rawDataTable.table.body.push(dataRow);
           $scope.dataRows.push(row);
           $scope.$apply();
         }
@@ -213,7 +228,7 @@
             time: {
               unit: 'hour',
               round: "hour",
-              stepSize: 2
+              fixedStepSize: 2
 						}
           }],
           yAxes: [{
@@ -233,9 +248,16 @@
       
       $scope.dataRows.forEach(function(data) {
         $scope.xAxis.push(data[0]);
-        $scope.zone1.push(data[2]);
-        $scope.zone2.push(data[3]);
-        $scope.zone3.push(data[4]);
+        
+        if($scope.zoneModel.zone1) {
+          $scope.zone1.push(data[2]);
+        }
+        if($scope.zoneModel.zone2) {
+          $scope.zone2.push(data[3]);
+        }
+        if($scope.zoneModel.zone3) {
+          $scope.zone3.push(data[4]);
+        }
       });
 
       $scope.activeKey += 1;
