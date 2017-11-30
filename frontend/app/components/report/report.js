@@ -40,6 +40,20 @@
     $scope.errorMessage = "";
     $scope.activeKey = 0;
 
+    $scope.formValues = {
+      treatment : "",
+      customer : "",
+      container : "",
+      commodity : "",
+      fumigant : "",
+      dosage : "",
+      startTime : "",
+      endTime : "",
+      exposure : "",
+      certGas : "",
+      fumigator : "",
+    }
+
     $scope.zoneModel = {
       zone1: false,
       zone2: false,
@@ -71,9 +85,18 @@
 
     $scope.activeView = $scope.map[$scope.activeKey];
 
-    function createPdf(userId, filename, size, downloadUrl, lastModified) {
-      //fancy hashing algorithm goes here
-
+    $scope.createPdf = function() {
+      for (const prop in $scope.formValues) {
+        if ($scope.formValues.hasOwnProperty(prop)) {
+          for (const idx in fumiForm.content) {
+            var obj = fumiForm.content[idx];
+            if (obj.hasOwnProperty('id') && obj.id === prop) {
+              fumiForm.content[idx].text += $scope.formValues[prop];
+            }
+          }
+        } 
+      }
+      pdfMake.createPdf(fumiForm).open();
     };
 
     uploader.uploadItem = function (value) {
@@ -93,7 +116,10 @@
             return (y !== (undefined || null));
           });
 
-          row[0] = new Date(row[0] + " " + row[1]);
+        
+          var date = moment(row[0] + " " + row[1],'DD.MM.YY h:mm:ss').format()
+          row[0] = new Date(date);
+          row[0] = date;
           row[2] = parseInt(row[2].replace(/,/g, '.'));
           row[3] = parseInt(row[3].replace(/,/g, '.'));
           row[4] = parseInt(row[4].replace(/,/g, '.'));
@@ -181,12 +207,13 @@
 						ticks: {
               source: 'labels',
               major: {
-                fontSize: "7"
+                fontSize: "5"
               }
             },
             time: {
               unit: 'hour',
-              unitStepSize: 0.5,
+              round: "hour",
+              stepSize: 2
 						}
           }],
           yAxes: [{

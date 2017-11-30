@@ -1,8 +1,5 @@
-// playground requires you to assign document definition to a variable called dd
-
-var dd = {
+var fumiForm = {
 	content: [
-
 		{ 
 			image: 'sampleImage.jpg',
 			alignment: 'left',
@@ -42,47 +39,58 @@ var dd = {
 		},
 		" "," ",
 		{
-		    text: "TREATMENT N: %s"
+			id : "treatment",
+		    text: "TREATMENT N: "
 		},
         " ",
 		{
-		    text: "CUSTOMER NAME: %s"
+			id : "customer",
+		    text: "CUSTOMER NAME: "
 		},
         " ",
 		{
-		    text: "CONTAINER N°/ Lot #(s): %s"
+			id : "container",
+		    text: "CONTAINER N°/ Lot #(s): "
 		},
 		" "," ",
 		{
-		    text: "COMMODITY: %s"
+			id: "commodity",
+		    text: "COMMODITY: "
 		},
         " ",
 		{
-		    text: "FUMIGANT: %s"
+			id : "fumigant",
+		    text: "FUMIGANT: "
 		},
         " ",
 		{
-		    text: "DOSAGE RATE: %s"
+			id : "dosage",
+		    text: "DOSAGE RATE: "
 		},
         " ",
 		{
-		    text: "START DATE/Time : %s"
+			id : "startTime",
+		    text: "START DATE/Time : "
 		},
         " ",
 		{
-		    text: "END DATE/Time : %s"
+			id : "endTime",
+		    text: "END DATE/Time : "
 		},
         " ",
 		{
-		    text: "EXPOSURE: %s"
+			id : "exposure",
+		    text: "EXPOSURE: "
 		},
         " ",
 		{
-		    text: "CERTIFIED GAS FREE AT: %s"
+			id : "certGas",
+		    text: "CERTIFIED GAS FREE AT: "
 		},
 		" "," ",
 		{
-		    text: "FUMIGATOR: %s"
+			id : "fumigator",
+		    text: "FUMIGATOR: "
 		},
 		" "," "," "," ",
 		{
