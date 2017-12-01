@@ -115,7 +115,7 @@
       pdfMake.createPdf(fumiForm).open();
     };
 
-    uploader.uploadItem = function (value) {
+    $scope.uploader.uploadItem = function (value) {
 
       //HAD TO OVERWRITE EXISTING UPLOAD ITEM FUNCTION. 
       var self = this;
@@ -172,7 +172,7 @@
       this._render();
     };
 
-    uploader.onCompleteAll = function () {
+    $scope.uploader.onCompleteAll = function () {
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
     };
@@ -221,17 +221,16 @@
             type: "time",
             distribution: 'series',
 						ticks: {
-              
               source: 'labels',
               major: {
-                fontSize: "5"
+                fontSize: "3"
               }
             },
             time: {
               unit: 'hour',
               round: "hour",
               unitStepSize: 2,
-              tooltipFormat: "h:mm:ss a",
+              tooltipFormat: "MMM D, h:mm A",
               displayFormats: {
                 hour: 'MMM D, h:mm A'
               }
@@ -240,7 +239,7 @@
           yAxes: [{
 						scaleLabel: {
 							display: true,
-							labelString: 'value'
+							labelString: 'PPM'
 						}
 					}]
         },
@@ -255,7 +254,7 @@
       $scope.dataRows.forEach(function(data) {
         var date = moment(data[0]).startOf('hour');
         $scope.xAxis.push(date);
-        
+
         if($scope.zoneModel.zone1) {
           $scope.zone1.push(data[2]);
         }
@@ -267,6 +266,14 @@
         }
       });
 
+      var parsedDates = []
+      for (var i = 0; i < $scope.xAxis.length; i = i+10) {
+        parsedDates.push($scope.xAxis[i]);
+      };
+
+      console.log($scope.xAxis);
+      console.log(parsedDates);
+      $scope.xAxis = parsedDates;
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
     };
