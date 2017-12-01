@@ -22,7 +22,7 @@
 
   function Ctrl($http, $scope, FileUploader) {
 
-    var uploader = $scope.uploader = new FileUploader({
+    $scope.uploader = new FileUploader({
       filters: [{
         name: 'csvOnly',
         // A user-defined filter
@@ -108,7 +108,7 @@
         image: imgData,
         pageBreak: 'after',
         width: pageWidth/1.8, 
-        height: pageHeigth / 1.5
+        height: pageHeigth / 2
       });
 
       fumiForm.content.push(rawDataTable);
@@ -173,13 +173,11 @@
     };
 
     uploader.onCompleteAll = function () {
-      
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
     };
 
     $scope.lineData = {
-      //labels: [0,20,40,60,80,100,120,140,160,180,200],
       labels: $scope.xAxis,
       datasets: [{
           label: "Zone 1",
@@ -217,9 +215,13 @@
       options: {
         scales: {
           xAxes: [{
+            gridLines: {	
+              offsetGridLines: true
+            },
             type: "time",
             distribution: 'series',
 						ticks: {
+              
               source: 'labels',
               major: {
                 fontSize: "5"
@@ -228,7 +230,11 @@
             time: {
               unit: 'hour',
               round: "hour",
-              fixedStepSize: 2
+              unitStepSize: 2,
+              tooltipFormat: "h:mm:ss a",
+              displayFormats: {
+                hour: 'MMM D, h:mm A'
+              }
 						}
           }],
           yAxes: [{
@@ -247,7 +253,8 @@
     $scope.generateReport = function () {
       
       $scope.dataRows.forEach(function(data) {
-        $scope.xAxis.push(data[0]);
+        var date = moment(data[0]).startOf('hour');
+        $scope.xAxis.push(date);
         
         if($scope.zoneModel.zone1) {
           $scope.zone1.push(data[2]);
