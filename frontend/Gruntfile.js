@@ -123,6 +123,7 @@ module.exports = function (grunt) {
                             '.htaccess',
                             '*.html',
                             'components/{,*/}*.html',
+                            'components/{,*/}/subviews/*.html',
                             'components/{,*/}*.png',
                             'styles/patterns/*.*',
                             'img/{,*/}*.*'
@@ -220,7 +221,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= inspinia.dist %>',
-                    src: ['*.html', 'components/{,*/}*.html'],
+                    src: ['*.html', 'components/{,*/}*.html', 'components/{,*/}/subviews/*.html'],
                     dest: '<%= inspinia.dist %>'
                 }]
             }

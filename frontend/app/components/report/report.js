@@ -86,9 +86,9 @@
     $scope.activeView = $scope.map[$scope.activeKey];
 
     $scope.createPdf = function() {
-      for (const prop in $scope.formValues) {
+      for (var prop in $scope.formValues) {
         if ($scope.formValues.hasOwnProperty(prop)) {
-          for (const idx in fumiForm.content) {
+          for (var idx in fumiForm.content) {
             var obj = fumiForm.content[idx];
             if (obj.hasOwnProperty('id') && obj.id === prop) {
               fumiForm.content[idx].text += $scope.formValues[prop];

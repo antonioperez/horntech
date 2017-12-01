@@ -18,10 +18,6 @@
               {
                   name: 'angles',
                   files: ['js/plugins/chartJs/angles.js']
-              },
-              {
-                name: 'fumiForm',
-                files: ['components/report/fumi.js']
               }
             ]);
           }]
