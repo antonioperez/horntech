@@ -28,10 +28,12 @@
         name: 'csvOnly',
         // A user-defined filter
         fn: function (item) {
-          if (item.type != 'text/csv') {
-            $scope.errorMessage = "CSV Files Only!";
+          $scope.errorMessage = "";
+          console.log(item);
+          if (item.type != 'text/csv' && item.type != 'text/plain') {
+            $scope.errorMessage = "CSV or Txt Files Only!";
             return false;
-          }
+          } 
           return true;
         }
       }]
