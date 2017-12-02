@@ -22,7 +22,8 @@
 
   function Ctrl($http, $scope, FileUploader) {
 
-    $scope.uploader = new FileUploader({
+    var uploader = $scope.uploader = new FileUploader({
+      url: "https://perezprogramming.com/upload.php",
       filters: [{
         name: 'csvOnly',
         // A user-defined filter
@@ -101,7 +102,7 @@
       var ctx = canvas.getContext('2d');
       var imgData = canvas.toDataURL();
 
-      var pageWidth = 900;
+      var pageWidth = 1000;
       var pageHeigth = 1000;
 
       fumiForm.content.push({
@@ -152,27 +153,35 @@
           var dataRow = [date.format('LLL'), row[2], row[3], row[4]];
           rawDataTable.table.body.push(dataRow);
           $scope.dataRows.push(row);
+          self._render();
+
           $scope.$apply();
         }
       });
 
-      var index = this.getIndexOfItem(value);
-      var item = this.queue[index];
-      var transport = this.isHTML5 ? '_xhrTransport' : '_iframeTransport';
+    try {
+        var index = this.getIndexOfItem(value);
+        var item = this.queue[index];
+        var transport = this.isHTML5 ? '_xhrTransport' : '_iframeTransport';
+  
+        item._prepareToUploading();
+        if (this.isUploading) return;
+  
+        this._onBeforeUploadItem(item);
+        if (item.isCancel) return;
+  
+        item.isUploading = true;
+        this.isUploading = true;
+        this[transport](item);
+        this._render();
+     }
+     catch (e) {
+        console.log(e); 
+     }
 
-      item._prepareToUploading();
-      if (this.isUploading) return;
-
-      this._onBeforeUploadItem(item);
-      if (item.isCancel) return;
-
-      item.isUploading = true;
-      this.isUploading = true;
-      this[transport](item);
-      this._render();
     };
 
-    $scope.uploader.onCompleteAll = function () {
+    uploader.onCompleteAll = function () {
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
     };
@@ -252,7 +261,7 @@
     $scope.generateReport = function () {
       
       $scope.dataRows.forEach(function(data) {
-        var date = moment(data[0]).startOf('hour');
+        var date = moment(data[0], 'LLL').startOf('hour');
         $scope.xAxis.push(date);
 
         if($scope.zoneModel.zone1) {
@@ -271,8 +280,6 @@
         parsedDates.push($scope.xAxis[i]);
       };
 
-      console.log($scope.xAxis);
-      console.log(parsedDates);
       $scope.xAxis = parsedDates;
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
