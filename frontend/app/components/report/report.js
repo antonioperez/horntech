@@ -243,7 +243,7 @@
               unitStepSize: 2,
               tooltipFormat: "MMM D, h:mm A",
               displayFormats: {
-                hour: 'MMM D, h:mm A'
+                hour: 'M/D/YY h:mm A'
               }
 						}
           }],
