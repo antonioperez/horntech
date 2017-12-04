@@ -23,20 +23,20 @@
   function Ctrl($http, $scope, FileUploader) {
 
     var uploader = $scope.uploader = new FileUploader({
-      url: "https://perezprogramming.com/upload.php",
-      filters: [{
-        name: 'csvOnly',
-        // A user-defined filter
-        fn: function (item) {
-          $scope.errorMessage = "";
-          console.log(item);
-          if (item.type != 'text/csv' && item.type != 'text/plain') {
-            $scope.errorMessage = "CSV or Txt Files Only!";
-            return false;
-          } 
-          return true;
-        }
-      }]
+      url: "https://perezprogramming.com/upload.php"
+      // filters: [{
+      //   name: 'csvOnly',
+      //   // A user-defined filter
+      //   fn: function (item) {
+      //     $scope.errorMessage = "";
+      //     console.log(item);
+      //     if (item.type != 'text/csv' && item.type != 'text/plain') {
+      //       $scope.errorMessage = "CSV or Txt Files Only!";
+      //       return false;
+      //     } 
+      //     return true;
+      //   }
+      // }]
     });
 
     $scope.dataRows = [];
@@ -110,7 +110,7 @@
       fumiForm.content.push({
         image: imgData,
         pageBreak: 'after',
-        width: pageWidth/1.8, 
+        width: pageWidth/1.9, 
         height: pageHeigth / 2
       });
 
