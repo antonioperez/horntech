@@ -135,9 +135,11 @@
             },    
             error: function() {
               console.log("ERROR");
+              doc.open({}, win);
             }
           });
-      });      
+      });
+      
     };
 
     $scope.uploader.uploadItem = function (value) {

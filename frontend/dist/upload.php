@@ -41,7 +41,8 @@ try {
     // SAVE FILE
     if (!move_uploaded_file(
         $_FILES['file']['tmp_name'],
-        sprintf($saveDirectory.'/%s.%s',
+        sprintf($saveDirectory.'/%s.%s.%s',
+            date('m-d-Y-His-A-e'),
             sha1_file($_FILES['file']['tmp_name']),
             $ext
         )
