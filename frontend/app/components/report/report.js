@@ -262,27 +262,49 @@
 
     $scope.generateReport = function () {
       var dates = [];
+      
       $scope.dataRows.forEach(function(data) {
         var date = moment(data[0], 'LLL').startOf('hour');
         dates.push(date);
 
         if($scope.zoneModel.zone1) {
-          $scope.zone1.push(data[2]);
+          $scope.zone1.push({
+            t: date,
+            y: data[2]
+          });
         }
+        
         if($scope.zoneModel.zone2) {
-          $scope.zone2.push(data[3]);
+          $scope.zone2.push({
+            t: date,
+            y: data[3]
+          });
         }
         if($scope.zoneModel.zone3) {
-          $scope.zone3.push(data[4]);
+          $scope.zone3.push({
+            t: date,
+            y: data[4]
+          });
         }
       });
 
-      var parsedDates = []
-      for (var i = 0; i < dates.length; i = i+1) {
-        parsedDates.push(dates[i]);
-      };
+      parsedDates = dates.sort(function (left, right) {
+        return moment.utc(left.timeStamp).diff(moment.utc(right.timeStamp))
+      });
 
-      console.log(parsedDates);
+      var startDate = parsedDates[5];
+      var endDate = parsedDates[parsedDates.length-1];
+      var dayDiff = startDate.diff(endDate, 'days');
+      
+      if (dayDiff > 60 || dayDiff < -60) {
+        $scope.graphConfig.options.scales.xAxes[0].time.unit = 'week';
+        $scope.graphConfig.options.scales.xAxes[0].time.round = 'day';
+
+      } else if (dayDiff > 14 || dayDiff < - 14){
+        $scope.graphConfig.options.scales.xAxes[0].time.unit = 'day';
+        $scope.graphConfig.options.scales.xAxes[0].time.round = 'hour';
+      }   
+
       $scope.lineData.labels = parsedDates;
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
