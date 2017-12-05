@@ -111,7 +111,7 @@
         image: imgData,
         pageBreak: 'after',
         width: pageWidth/1.9, 
-        height: pageHeigth / 2
+        height: pageHeigth / 3
       });
 
       fumiForm.content.push(rawDataTable);
@@ -156,7 +156,6 @@
           rawDataTable.table.body.push(dataRow);
           $scope.dataRows.push(row);
           self._render();
-
           $scope.$apply();
         }
       });
@@ -189,7 +188,7 @@
     };
 
     $scope.lineData = {
-      labels: $scope.xAxis,
+      labels: [],
       datasets: [{
           label: "Zone 1",
           fill: false,
@@ -230,9 +229,9 @@
               offsetGridLines: true
             },
             type: "time",
-            distribution: 'series',
+            distribution: 'linear',
 						ticks: {
-              source: 'labels',
+              source: 'auto',
               major: {
                 fontSize: "3"
               }
@@ -240,7 +239,8 @@
             time: {
               unit: 'hour',
               round: "hour",
-              unitStepSize: 2,
+              stepSize: 2,
+              source : "labels",
               tooltipFormat: "MMM D, h:mm A",
               displayFormats: {
                 hour: 'M/D/YY h:mm A'
@@ -261,10 +261,10 @@
     };
 
     $scope.generateReport = function () {
-      
+      var dates = [];
       $scope.dataRows.forEach(function(data) {
         var date = moment(data[0], 'LLL').startOf('hour');
-        $scope.xAxis.push(date);
+        dates.push(date);
 
         if($scope.zoneModel.zone1) {
           $scope.zone1.push(data[2]);
@@ -278,11 +278,12 @@
       });
 
       var parsedDates = []
-      for (var i = 0; i < $scope.xAxis.length; i = i+10) {
-        parsedDates.push($scope.xAxis[i]);
+      for (var i = 0; i < dates.length; i = i+1) {
+        parsedDates.push(dates[i]);
       };
 
-      $scope.xAxis = parsedDates;
+      console.log(parsedDates);
+      $scope.lineData.labels = parsedDates;
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
     };
