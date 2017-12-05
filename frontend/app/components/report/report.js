@@ -1,15 +1,15 @@
 (function () {
 
   angular
-  .module('app').directive('chart', function(){
-    return {
-        link: function(scope, elem, attrs){
-            console.log(scope.graphConfig);
-            var ctx = document.getElementById("graphOutput").getContext("2d");
-            window.myLine = new Chart(ctx, scope.graphConfig);
+    .module('app').directive('chart', function () {
+      return {
+        link: function (scope, elem, attrs) {
+          console.log(scope.graphConfig);
+          var ctx = document.getElementById("graphOutput").getContext("2d");
+          window.myLine = new Chart(ctx, scope.graphConfig);
         }
-    }
-  });
+      }
+    });
 
   angular
     .module('app')
@@ -44,17 +44,17 @@
     $scope.activeKey = 0;
 
     $scope.formValues = {
-      treatment : "",
-      customer : "",
-      container : "",
-      commodity : "",
-      fumigant : "",
-      dosage : "",
-      startTime : "",
-      endTime : "",
-      exposure : "",
-      certGas : "",
-      fumigator : "",
+      treatment: "",
+      customer: "",
+      container: "",
+      commodity: "",
+      fumigant: "",
+      dosage: "",
+      startTime: "",
+      endTime: "",
+      exposure: "",
+      certGas: "",
+      fumigator: "",
     }
 
     $scope.zoneModel = {
@@ -88,7 +88,7 @@
 
     $scope.activeView = $scope.map[$scope.activeKey];
 
-    $scope.createPdf = function() {
+    $scope.createPdf = function () {
       for (var prop in $scope.formValues) {
         if ($scope.formValues.hasOwnProperty(prop)) {
           for (var idx in fumiForm.content) {
@@ -97,7 +97,7 @@
               fumiForm.content[idx].text += $scope.formValues[prop];
             }
           }
-        } 
+        }
       }
 
       var canvas = document.getElementById('graphOutput');
@@ -110,12 +110,34 @@
       fumiForm.content.push({
         image: imgData,
         pageBreak: 'after',
-        width: pageWidth/1.9, 
+        width: pageWidth / 1.9,
         height: pageHeigth / 3
       });
 
       fumiForm.content.push(rawDataTable);
-      pdfMake.createPdf(fumiForm).open();
+
+      var win = window.open('', '_blank');
+      var doc = pdfMake.createPdf(fumiForm)
+
+      doc.getBlob(function (data) {
+        var upload = new FormData();
+        upload.append('file', data);
+
+        $.ajax({
+            url: '/upload.php',
+            type: 'POST',
+            data: upload,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              console.log(data);
+              doc.open({}, win);
+            },    
+            error: function() {
+              console.log("ERROR");
+            }
+          });
+      });      
     };
 
     $scope.uploader.uploadItem = function (value) {
@@ -135,7 +157,7 @@
             return (y !== (undefined || null));
           });
 
-          var date = moment(row[0] + " " + row[1],'DD.MM.YY h:mm:ss')
+          var date = moment(row[0] + " " + row[1], 'DD.MM.YY h:mm:ss')
           row[0] = date.format('LLL');
           row[2] = parseInt(row[2].replace(/,/g, '.'));
           row[3] = parseInt(row[3].replace(/,/g, '.'));
@@ -160,25 +182,24 @@
         }
       });
 
-    try {
+      try {
         var index = this.getIndexOfItem(value);
         var item = this.queue[index];
         var transport = this.isHTML5 ? '_xhrTransport' : '_iframeTransport';
-  
+
         item._prepareToUploading();
         if (this.isUploading) return;
-  
+
         this._onBeforeUploadItem(item);
         if (item.isCancel) return;
-  
+
         item.isUploading = true;
         this.isUploading = true;
         this[transport](item);
         this._render();
-     }
-     catch (e) {
-        console.log(e); 
-     }
+      } catch (e) {
+        console.log(e);
+      }
 
     };
 
@@ -210,27 +231,27 @@
           backgroundColor: "rgba(88,172,75,.5)",
           data: $scope.zone3
         }
-  
+
       ]
     };
 
     $scope.graphConfig = {
       type: 'line',
       responsive: true,
-      title:{
-        display:true,
-        text:"PH3 [PPM]"
+      title: {
+        display: true,
+        text: "PH3 [PPM]"
       },
-      data : $scope.lineData, 
+      data: $scope.lineData,
       options: {
         scales: {
           xAxes: [{
-            gridLines: {	
+            gridLines: {
               offsetGridLines: true
             },
             type: "time",
             distribution: 'linear',
-						ticks: {
+            ticks: {
               source: 'auto',
               major: {
                 fontSize: "3"
@@ -240,19 +261,19 @@
               unit: 'hour',
               round: "hour",
               stepSize: 2,
-              source : "labels",
+              source: "labels",
               tooltipFormat: "MMM D, h:mm A",
               displayFormats: {
                 hour: 'M/D/YY h:mm A'
               }
-						}
+            }
           }],
           yAxes: [{
-						scaleLabel: {
-							display: true,
-							labelString: 'PPM'
-						}
-					}]
+            scaleLabel: {
+              display: true,
+              labelString: 'PPM'
+            }
+          }]
         },
         legend: {
           position: 'bottom',
@@ -262,25 +283,25 @@
 
     $scope.generateReport = function () {
       var dates = [];
-      
-      $scope.dataRows.forEach(function(data) {
+
+      $scope.dataRows.forEach(function (data) {
         var date = moment(data[0], 'LLL').startOf('hour');
         dates.push(date);
 
-        if($scope.zoneModel.zone1) {
+        if ($scope.zoneModel.zone1) {
           $scope.zone1.push({
             t: date,
             y: data[2]
           });
         }
-        
-        if($scope.zoneModel.zone2) {
+
+        if ($scope.zoneModel.zone2) {
           $scope.zone2.push({
             t: date,
             y: data[3]
           });
         }
-        if($scope.zoneModel.zone3) {
+        if ($scope.zoneModel.zone3) {
           $scope.zone3.push({
             t: date,
             y: data[4]
@@ -293,17 +314,17 @@
       });
 
       var startDate = parsedDates[5];
-      var endDate = parsedDates[parsedDates.length-1];
+      var endDate = parsedDates[parsedDates.length - 1];
       var dayDiff = startDate.diff(endDate, 'days');
-      
+
       if (dayDiff > 60 || dayDiff < -60) {
         $scope.graphConfig.options.scales.xAxes[0].time.unit = 'week';
         $scope.graphConfig.options.scales.xAxes[0].time.round = 'day';
 
-      } else if (dayDiff > 14 || dayDiff < - 14){
+      } else if (dayDiff > 14 || dayDiff < -14) {
         $scope.graphConfig.options.scales.xAxes[0].time.unit = 'day';
         $scope.graphConfig.options.scales.xAxes[0].time.round = 'hour';
-      }   
+      }
 
       $scope.lineData.labels = parsedDates;
       $scope.activeKey += 1;
