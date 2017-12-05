@@ -22,7 +22,7 @@
 			},
 			{
 
-				text: 'HORN TECHNOLOGIES &SERVICES, INC.',
+				text: 'HORN TECHNOLOGIES & SERVICES, INC.',
 				style: 'header',
 				alignment: 'center'
 			},
