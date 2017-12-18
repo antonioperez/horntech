@@ -5,6 +5,7 @@
       return {
         link: function (scope, elem, attrs) {
           console.log(scope.graphConfig);
+
           var ctx = document.getElementById("graphOutput").getContext("2d");
           window.myLine = new Chart(ctx, scope.graphConfig);
         }
@@ -116,28 +117,39 @@
 
       fumiForm.content.push(rawDataTable);
 
-      var win = window.open('', '_blank');
+      
       var doc = pdfMake.createPdf(fumiForm)
-
       doc.getBlob(function (data) {
         var upload = new FormData();
         upload.append('file', data);
 
-        $.ajax({
-            url: '/upload.php',
-            type: 'POST',
-            data: upload,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-              console.log(data);
-              doc.open({}, win);
-            },    
-            error: function() {
-              console.log("ERROR");
-              doc.open({}, win);
-            }
-          });
+        if((navigator.userAgent.indexOf("MSIE") != -1 )){
+          doc.download();
+        } else if((navigator.userAgent.indexOf("Edge") != -1 )){
+          doc.download();
+        } else {
+          var win = window.open('', '_blank');
+          doc.open({}, win);
+        }
+        
+        // $.ajax({
+        //     url: '/upload.php',
+        //     type: 'POST',
+        //     data: upload,
+        //     contentType: false,
+        //     processData: false,
+        //     success: function(data) {
+        //       if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) {
+        //         doc.download();
+        //       } else {
+        //         doc.open({}, win);
+        //       }
+        //     },    
+        //     error: function() {
+
+        //       doc.open({}, win);
+        //     }
+        //   });
       });
       
     };
@@ -255,9 +267,8 @@
             distribution: 'linear',
             ticks: {
               source: 'auto',
-              major: {
-                fontSize: "3"
-              }
+              autoSkip: true,
+              maxTicksLimit: 10
             },
             time: {
               unit: 'hour',
