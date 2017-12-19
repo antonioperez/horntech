@@ -301,20 +301,21 @@
         var date = moment(data[0], 'LLL').startOf('hour');
         dates.push(date);
 
-        if ($scope.zoneModel.zone1) {
+        if ($scope.zoneModel.zone1 && data[2] > 0) {
           $scope.zone1.push({
             t: date,
             y: data[2]
           });
         }
 
-        if ($scope.zoneModel.zone2) {
+        if ($scope.zoneModel.zone2 && data[3] > 0) {
           $scope.zone2.push({
             t: date,
             y: data[3]
           });
         }
-        if ($scope.zoneModel.zone3) {
+        
+        if ($scope.zoneModel.zone3 && data[4] > 0) {
           $scope.zone3.push({
             t: date,
             y: data[4]
