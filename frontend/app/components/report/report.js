@@ -51,7 +51,9 @@
       commodity: "",
       fumigant: "",
       dosage: "",
+      startDate: "",
       startTime: "",
+      endDate: "",
       endTime: "",
       exposure: "",
       certGas: "",
@@ -296,9 +298,10 @@
 
     $scope.generateReport = function () {
       var dates = [];
-
+  
       $scope.dataRows.forEach(function (data) {
         var date = moment(data[0], 'LLL').startOf('hour');
+        data[0] = date;
         dates.push(date);
 
         if ($scope.zoneModel.zone1 && data[2] > 0) {
@@ -323,13 +326,21 @@
         }
       });
 
-      parsedDates = dates.sort(function (left, right) {
-        return moment.utc(left.timeStamp).diff(moment.utc(right.timeStamp))
-      });
 
-      var startDate = parsedDates[5];
-      var endDate = parsedDates[parsedDates.length - 1];
-      var dayDiff = startDate.diff(endDate, 'days');
+      var startDate = $scope.dataRows[0]
+      var endDate = $scope.dataRows[$scope.dataRows.length - 1];
+      startDate = startDate[0];
+      endDate = endDate[0];
+
+      var dayDiff = Math.abs(startDate.diff(endDate, 'days', true));
+      var hourDiff = Math.abs(startDate.diff(endDate, 'hours', true));
+      
+      $scope.formValues.startDate = startDate.format("M/D/YY");
+      $scope.formValues.startTime = startDate.format("h:mm A");
+      $scope.formValues.endDate = endDate.format("M/D/YY");
+      $scope.formValues.endTime = endDate.format("h:mm A");
+      $scope.formValues.exposure = hourDiff + " hrs";
+
 
       if (dayDiff > 60 || dayDiff < -60) {
         $scope.graphConfig.options.scales.xAxes[0].time.unit = 'week';
@@ -340,7 +351,7 @@
         $scope.graphConfig.options.scales.xAxes[0].time.round = 'hour';
       }
 
-      $scope.lineData.labels = parsedDates;
+      $scope.lineData.labels = dates;
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
     };

@@ -64,7 +64,7 @@
 			" ",
 			{
 				id: "container",
-				text: "CONTAINER N°/ Lot #(s): "
+				text: "ROOM#/LOT#: "
 			},
 			" ", " ",
 			{
@@ -79,17 +79,27 @@
 			" ",
 			{
 				id: "dosage",
-				text: "DOSAGE RATE: "
+				text: "DOSE RATE (g/cuft): "
+			},
+			" ",
+			{
+				id: "startDate",
+				text: "START DATE: "
 			},
 			" ",
 			{
 				id: "startTime",
-				text: "START DATE/Time : "
+				text: "START TIME: "
+			},
+			" ",
+			{
+				id: "endDate",
+				text: "END DATE: "
 			},
 			" ",
 			{
 				id: "endTime",
-				text: "END DATE/Time : "
+				text: "END TIME: "
 			},
 			" ",
 			{

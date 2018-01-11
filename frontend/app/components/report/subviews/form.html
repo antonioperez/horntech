@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">CONTAINER N°/ Lot #(s)</label>
+            <label class="col-sm-2 control-label">ROOM#/LOT#</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control"  ng-model="formValues.container">
             </div>
@@ -33,25 +33,37 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">DOSAGE RATE</label>
+            <label class="col-sm-2 control-label">DOSE RATE (g/cuft)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" ng-model="formValues.dosage">
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">START DATE/Time</label>
+            <label class="col-sm-2 control-label">START DATE</label>
             <div class="col-sm-10">
-                <input type="datetime-local" class="form-control" ng-model="formValues.startTime">
+                <input type="text" class="form-control" ng-model="formValues.startDate">
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">END DATE/Time</label>
+            <label class="col-sm-2 control-label">START TIME</label>
             <div class="col-sm-10">
-                <input type="datetime-local" class="form-control" ng-model="formValues.endTime">
+                <input type="text" class="form-control" ng-model="formValues.startTime">
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">EXPOSURE</label>
+            <label class="col-sm-2 control-label">END DATE</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" ng-model="formValues.endDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">END TIME</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" ng-model="formValues.endTime">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">EXPOSURE TIME</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control"  ng-model="formValues.exposure">
             </div>
