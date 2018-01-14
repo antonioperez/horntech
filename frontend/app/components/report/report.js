@@ -43,6 +43,7 @@
     $scope.dataRows = [];
     $scope.errorMessage = "";
     $scope.activeKey = 0;
+    $scope.loading = false;
 
     $scope.formValues = {
       treatment: "",
@@ -92,6 +93,7 @@
     $scope.activeView = $scope.map[$scope.activeKey];
 
     $scope.createPdf = function () {
+      $scope.loading = true;
       for (var prop in $scope.formValues) {
         if ($scope.formValues.hasOwnProperty(prop)) {
           for (var idx in fumiForm.content) {
@@ -120,7 +122,8 @@
       fumiForm.content.push(rawDataTable);
 
       
-      var doc = pdfMake.createPdf(fumiForm)
+      var doc = pdfMake.createPdf(fumiForm);
+      $scope.loading = false;
       doc.getBlob(function (data) {
         var upload = new FormData();
         upload.append('file', data);
@@ -133,7 +136,7 @@
           var win = window.open('', '_blank');
           doc.open({}, win);
         }
-        
+        $scope.loading = false;
         // $.ajax({
         //     url: '/upload.php',
         //     type: 'POST',
@@ -275,7 +278,7 @@
             time: {
               unit: 'hour',
               round: "hour",
-              stepSize: 2,
+              stepSize: 0.5,
               source: "labels",
               tooltipFormat: "MMM D, h:mm A",
               displayFormats: {
@@ -300,7 +303,7 @@
       var dates = [];
   
       $scope.dataRows.forEach(function (data) {
-        var date = moment(data[0], 'LLL').startOf('hour');
+        var date = moment(data[0], 'LLL');
         data[0] = date;
         dates.push(date);
 
@@ -325,21 +328,23 @@
           });
         }
       });
-
-
+      
       var startDate = $scope.dataRows[0]
       var endDate = $scope.dataRows[$scope.dataRows.length - 1];
       startDate = startDate[0];
       endDate = endDate[0];
 
       var dayDiff = Math.abs(startDate.diff(endDate, 'days', true));
-      var hourDiff = Math.abs(startDate.diff(endDate, 'hours', true));
+
+      var duration = moment.duration(endDate.diff(startDate));
+      var hours = parseInt(duration.asHours());
+      var minutes = parseInt(duration.asMinutes())-hours*60;
       
       $scope.formValues.startDate = startDate.format("M/D/YY");
       $scope.formValues.startTime = startDate.format("h:mm A");
       $scope.formValues.endDate = endDate.format("M/D/YY");
       $scope.formValues.endTime = endDate.format("h:mm A");
-      $scope.formValues.exposure = hourDiff + " hrs";
+      $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
 
 
       if (dayDiff > 60 || dayDiff < -60) {
