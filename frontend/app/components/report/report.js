@@ -345,14 +345,16 @@
       $scope.formValues.endTime = endDate.format("h:mm A");
       $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
 
-
-      if (dayDiff > 60 || dayDiff < -60) {
+      console.log(dayDiff);
+      if (dayDiff > 60) {
         $scope.graphConfig.options.scales.xAxes[0].time.unit = 'week';
         $scope.graphConfig.options.scales.xAxes[0].time.round = 'day';
+        $scope.graphConfig.options.scales.xAxes[0].time.stepSize = 5;
 
-      } else if (dayDiff > 14 || dayDiff < -14) {
+      } else if (dayDiff > 14) {
         $scope.graphConfig.options.scales.xAxes[0].time.unit = 'day';
         $scope.graphConfig.options.scales.xAxes[0].time.round = 'hour';
+        $scope.graphConfig.options.scales.xAxes[0].time.stepSize = 2;
       }
 
       $scope.lineData.labels = dates;
