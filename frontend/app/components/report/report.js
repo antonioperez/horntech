@@ -277,7 +277,6 @@
             },
             time: {
               unit: 'hour',
-              round: "hour",
               stepSize: 0.5,
               source: "labels",
               tooltipFormat: "MMM D, h:mm A",
