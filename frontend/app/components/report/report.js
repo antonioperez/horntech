@@ -128,33 +128,34 @@
         var upload = new FormData();
         upload.append('file', data);
 
-        if((navigator.userAgent.indexOf("MSIE") != -1 )){
-          doc.download();
-        } else if((navigator.userAgent.indexOf("Edge") != -1 )){
-          doc.download();
-        } else {
-          var win = window.open('', '_blank');
-          doc.open({}, win);
-        }
         $scope.loading = false;
-        // $.ajax({
-        //     url: '/upload.php',
-        //     type: 'POST',
-        //     data: upload,
-        //     contentType: false,
-        //     processData: false,
-        //     success: function(data) {
-        //       if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) {
-        //         doc.download();
-        //       } else {
-        //         doc.open({}, win);
-        //       }
-        //     },    
-        //     error: function() {
-
-        //       doc.open({}, win);
-        //     }
-        //   });
+        $.ajax({
+            url: '/upload.php',
+            type: 'POST',
+            data: upload,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              if((navigator.userAgent.indexOf("MSIE") != -1 )){
+                doc.download();
+              } else if((navigator.userAgent.indexOf("Edge") != -1 )){
+                doc.download();
+              } else {
+                var win = window.open('', '_blank');
+                doc.open({}, win);
+              }
+            },    
+            error: function() {
+              if((navigator.userAgent.indexOf("MSIE") != -1 )){
+                doc.download();
+              } else if((navigator.userAgent.indexOf("Edge") != -1 )){
+                doc.download();
+              } else {
+                var win = window.open('', '_blank');
+                doc.open({}, win);
+              }
+            }
+          });
       });
       
     };

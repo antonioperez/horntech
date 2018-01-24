@@ -106,12 +106,7 @@
 				id: "exposure",
 				text: "EXPOSURE: "
 			},
-			" ",
-			{
-				id: "certGas",
-				text: "CERTIFIED GAS FREE AT: "
-			},
-			" ", " ",
+			" ", 
 			{
 				id: "fumigator",
 				text: "FUMIGATOR: "
