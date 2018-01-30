@@ -307,7 +307,7 @@
             var endDate = moment(new Date(-8640000000000000));
 
             if (datasetsNum > 1) {
-              for (let indx = 0; indx < datasetsNum; indx++) {
+              for (var indx = 0; indx < datasetsNum; indx++) {
                 var dates = [];
                 var tempEnd = null;
                 var tempStart = null;
@@ -315,16 +315,22 @@
                 
                 if (dataset.hidden === null) {
                   if (indx == 0){
-                    dates = $scope.zone1.map(a => a.t);
+                    dates = $scope.zone1.map(function(obj) { 
+                      return obj.t;
+                    });
                     tempStart = moment.min(dates);
                     tempEnd = moment.max(dates);
                   
                   } else if (indx == 1) {
-                    dates = $scope.zone2.map(a => a.t);
+                    dates = $scope.zone2.map(function(obj) { 
+                      return obj.t;
+                    });
                     tempStart = moment.min(dates);
                     tempEnd = moment.max(dates);
                   } else if (indx == 2) {
-                    dates = $scope.zone3.map(a => a.t);
+                    dates = $scope.zone3.map(function(obj) { 
+                      return obj.t;
+                    });
                     tempStart = moment.min(dates);
                     tempEnd = moment.max(dates);
                   }
