@@ -314,34 +314,33 @@
                 var dataset = ci.getDatasetMeta(indx);
                 
                 if (dataset.hidden === null) {
-                  if (indx == 0){
+                  if (indx == 0 && $scope.zoneModel.zone1){
                     dates = $scope.zone1.map(function(obj) { 
                       return obj.t;
                     });
                     tempStart = moment.min(dates);
                     tempEnd = moment.max(dates);
                   
-                  } else if (indx == 1) {
+                  } else if (indx == 1 && $scope.zoneModel.zone2) {
                     dates = $scope.zone2.map(function(obj) { 
                       return obj.t;
                     });
                     tempStart = moment.min(dates);
                     tempEnd = moment.max(dates);
-                  } else if (indx == 2) {
+                  } else if (indx == 2 && $scope.zoneModel.zone3) {
                     dates = $scope.zone3.map(function(obj) { 
                       return obj.t;
                     });
                     tempStart = moment.min(dates);
                     tempEnd = moment.max(dates);
                   }
-                }
 
-                if (tempStart !== null && tempEnd !== null){
-                  startDate = moment.min(tempStart, startDate);
-                  endDate = moment.max(tempEnd, endDate);
-                  $scope.updateTimes(startDate, endDate);
-                  $scope.$apply();
-
+                  if (tempStart !== null && tempEnd !== null){
+                    startDate = moment.min(tempStart, startDate);
+                    endDate = moment.max(tempEnd, endDate);
+                    $scope.updateTimes(startDate, endDate);
+                    $scope.$apply();
+                  }
                 }
               }
             }
@@ -354,11 +353,11 @@
       var duration = moment.duration(endDate.diff(startDate));
       var hours = parseInt(duration.asHours());
       var minutes = parseInt(duration.asMinutes())-hours*60;
-      $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
       $scope.formValues.startDate = startDate.format("M/D/YY");
       $scope.formValues.startTime = startDate.format("h:mm A");
       $scope.formValues.endDate = endDate.format("M/D/YY");
       $scope.formValues.endTime = endDate.format("h:mm A");
+      $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
     }
 
     $scope.generateReport = function () {
