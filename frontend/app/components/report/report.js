@@ -5,7 +5,6 @@
       return {
         link: function (scope, elem, attrs) {
           console.log(scope.graphConfig);
-
           var ctx = document.getElementById("graphOutput").getContext("2d");
           window.myLine = new Chart(ctx, scope.graphConfig);
         }
@@ -130,7 +129,7 @@
 
         $scope.loading = false;
         $.ajax({
-            url: '/upload.php',
+            url: '/hornReport/upload.php',
             type: 'POST',
             data: upload,
             contentType: false,
@@ -229,7 +228,6 @@
     };
 
     $scope.lineData = {
-      labels: [],
       datasets: [{
           label: "Zone 1",
           fill: false,
@@ -295,6 +293,55 @@
         },
         legend: {
           position: 'bottom',
+          onClick: function(e, legendItem) {
+            var index = legendItem.datasetIndex;
+            var ci = this.chart;
+            var meta = ci.getDatasetMeta(index);
+        
+            // See controller.isDatasetVisible comment
+            meta.hidden = meta.hidden === null? !ci.data.datasets[index].hidden : null;
+            ci.update();
+
+            var datasetsNum = ci.data.datasets.length;
+            var startDate = moment(new Date(8640000000000000));
+            var endDate = moment(new Date(-8640000000000000));
+
+            if (datasetsNum > 1) {
+              for (let indx = 0; indx < datasetsNum; indx++) {
+                var dates = [];
+                var tempEnd = null;
+                var tempStart = null;
+                var dataset = ci.getDatasetMeta(indx);
+                
+                if (dataset.hidden === null) {
+                  if (indx == 0){
+                    dates = $scope.zone1.map(a => a.t);
+                    tempStart = moment.min(dates);
+                    tempEnd = moment.max(dates);
+                  
+                  } else if (indx == 1) {
+                    dates = $scope.zone2.map(a => a.t);
+                    tempStart = moment.min(dates);
+                    tempEnd = moment.max(dates);
+                  } else if (indx == 2) {
+                    dates = $scope.zone3.map(a => a.t);
+                    tempStart = moment.min(dates);
+                    tempEnd = moment.max(dates);
+                  }
+                }
+
+                if (tempStart !== null && tempEnd !== null){
+                  startDate = moment.min(tempStart, startDate);
+                  endDate = moment.max(tempEnd, endDate);
+                  var duration = moment.duration(endDate.diff(startDate));
+                  var hours = parseInt(duration.asHours());
+                  var minutes = parseInt(duration.asMinutes())-hours*60;
+                  $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
+                  $scope.$apply();
+                }
+              }
+            }
+          }
         },
       }
     };
@@ -339,14 +386,13 @@
       var duration = moment.duration(endDate.diff(startDate));
       var hours = parseInt(duration.asHours());
       var minutes = parseInt(duration.asMinutes())-hours*60;
-      
+
       $scope.formValues.startDate = startDate.format("M/D/YY");
       $scope.formValues.startTime = startDate.format("h:mm A");
       $scope.formValues.endDate = endDate.format("M/D/YY");
       $scope.formValues.endTime = endDate.format("h:mm A");
       $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
 
-      console.log(dayDiff);
       if (dayDiff > 60) {
         $scope.graphConfig.options.scales.xAxes[0].time.unit = 'week';
         $scope.graphConfig.options.scales.xAxes[0].time.round = 'day';
@@ -358,7 +404,6 @@
         $scope.graphConfig.options.scales.xAxes[0].time.stepSize = 2;
       }
 
-      $scope.lineData.labels = dates;
       $scope.activeKey += 1;
       $scope.activeView = $scope.map[$scope.activeKey];
     };
