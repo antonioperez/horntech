@@ -343,6 +343,10 @@
                   var hours = parseInt(duration.asHours());
                   var minutes = parseInt(duration.asMinutes())-hours*60;
                   $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
+                  $scope.formValues.startDate = startDate.format("M/D/YY");
+                  $scope.formValues.startTime = startDate.format("h:mm A");
+                  $scope.formValues.endDate = endDate.format("M/D/YY");
+                  $scope.formValues.endTime = endDate.format("h:mm A");
                   $scope.$apply();
                 }
               }
