@@ -339,15 +339,9 @@
                 if (tempStart !== null && tempEnd !== null){
                   startDate = moment.min(tempStart, startDate);
                   endDate = moment.max(tempEnd, endDate);
-                  var duration = moment.duration(endDate.diff(startDate));
-                  var hours = parseInt(duration.asHours());
-                  var minutes = parseInt(duration.asMinutes())-hours*60;
-                  $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
-                  $scope.formValues.startDate = startDate.format("M/D/YY");
-                  $scope.formValues.startTime = startDate.format("h:mm A");
-                  $scope.formValues.endDate = endDate.format("M/D/YY");
-                  $scope.formValues.endTime = endDate.format("h:mm A");
+                  $scope.updateTimes(startDate, endDate);
                   $scope.$apply();
+
                 }
               }
             }
@@ -355,6 +349,17 @@
         },
       }
     };
+
+    $scope.updateTimes = function(startDate, endDate) {
+      var duration = moment.duration(endDate.diff(startDate));
+      var hours = parseInt(duration.asHours());
+      var minutes = parseInt(duration.asMinutes())-hours*60;
+      $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
+      $scope.formValues.startDate = startDate.format("M/D/YY");
+      $scope.formValues.startTime = startDate.format("h:mm A");
+      $scope.formValues.endDate = endDate.format("M/D/YY");
+      $scope.formValues.endTime = endDate.format("h:mm A");
+    }
 
     $scope.generateReport = function () {
       var dates = [];
@@ -385,23 +390,32 @@
           });
         }
       });
+
+      var startDate = moment(new Date(8640000000000000));
+      var endDate = moment(new Date(-8640000000000000));
+      if ($scope.zoneModel.zone1) {
+        var tempStart = $scope.zone1[0].t
+        var tempEnd = $scope.zone1[$scope.zone1.length - 1].t;
+        startDate = moment.min(tempStart, startDate);
+        endDate = moment.max(tempEnd, endDate);
+      }
+
+      if ($scope.zoneModel.zone2) {
+        var tempStart = $scope.zone2[0].t
+        var tempEnd = $scope.zone2[$scope.zone2.length - 1].t;
+        startDate = moment.min(tempStart, startDate);
+        endDate = moment.max(tempEnd, endDate);   
+      }
       
-      var startDate = $scope.dataRows[0]
-      var endDate = $scope.dataRows[$scope.dataRows.length - 1];
-      startDate = startDate[0];
-      endDate = endDate[0];
-
+      if ($scope.zoneModel.zone3) {
+        var tempStart = $scope.zone3[0].t
+        var tempEnd = $scope.zone3[$scope.zone3.length - 1].t;
+        startDate = moment.min(tempStart, startDate);
+        endDate = moment.max(tempEnd, endDate);
+      }
+      
       var dayDiff = Math.abs(startDate.diff(endDate, 'days', true));
-
-      var duration = moment.duration(endDate.diff(startDate));
-      var hours = parseInt(duration.asHours());
-      var minutes = parseInt(duration.asMinutes())-hours*60;
-
-      $scope.formValues.startDate = startDate.format("M/D/YY");
-      $scope.formValues.startTime = startDate.format("h:mm A");
-      $scope.formValues.endDate = endDate.format("M/D/YY");
-      $scope.formValues.endTime = endDate.format("h:mm A");
-      $scope.formValues.exposure = hours + " hrs and "+ minutes +' minutes.';
+      $scope.updateTimes(startDate, endDate);
 
       if (dayDiff > 60) {
         $scope.graphConfig.options.scales.xAxes[0].time.unit = 'week';
