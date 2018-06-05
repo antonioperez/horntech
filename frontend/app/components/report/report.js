@@ -277,7 +277,7 @@
 
         $scope.loading = false;
         $.ajax({
-            url: '/hornReport/upload.php',
+            url: "https://perezprogramming.com/upload.php",
             type: 'POST',
             data: upload,
             contentType: false,
