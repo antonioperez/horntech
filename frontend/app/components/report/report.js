@@ -22,20 +22,6 @@
 
   function Ctrl($http, $scope, FileUploader) {
 
-
-    var rawDataTable = {
-      layout: 'headerLineOnly',
-      style: "small",
-      table: {
-        headerRows: 1,
-        widths: ['auto', '*', '*', '*'],
-        body: [
-          ['Date/Time', 'Zone 1', 'Zone 2', 'Zone 3']
-        ]
-      }
-    }
-    
-  
     var uploader = $scope.uploader = new FileUploader({
       url: "https://perezprogramming.com/upload.php"
       // filters: [{
@@ -105,10 +91,9 @@
 
     $scope.activeView = $scope.map[$scope.activeKey];
 
-    
     $scope.createPdf = function () {
 
-      var fumiFormTemp = {
+      var fumiForm = {
         content: [{
             image: 'hornImage',
             alignment: 'center',
@@ -116,7 +101,7 @@
             height: 100,
           },
           {
-      
+    
             text: 'HORN TECHNOLOGIES & SERVICES, INC.',
             style: 'header',
             alignment: 'center'
@@ -245,10 +230,10 @@
       $scope.loading = true;
       for (var prop in $scope.formValues) {
         if ($scope.formValues.hasOwnProperty(prop)) {
-          for (var idx in fumiFormTemp.content) {
-            var obj = fumiFormTemp.content[idx];
+          for (var idx in fumiForm.content) {
+            var obj = fumiForm.content[idx];
             if (obj.hasOwnProperty('id') && obj.id === prop) {
-              fumiFormTemp.content[idx].text = fumiFormTemp.content[idx].text + " " + $scope.formValues[prop];
+              fumiForm.content[idx].text += $scope.formValues[prop];
             }
           }
         }
@@ -261,15 +246,17 @@
       var pageWidth = 1000;
       var pageHeigth = 1000;
 
-      fumiFormTemp.content.push({
+      fumiForm.content.push({
         image: imgData,
         pageBreak: 'after',
         width: pageWidth / 1.9,
         height: pageHeigth / 3
       });
 
-      fumiFormTemp.content.push(rawDataTable);
-      var doc = pdfMake.createPdf(fumiFormTemp);
+      fumiForm.content.push(rawDataTable);
+
+      
+      var doc = pdfMake.createPdf(fumiForm);
       $scope.loading = false;
       doc.getBlob(function (data) {
         var upload = new FormData();
@@ -277,7 +264,7 @@
 
         $scope.loading = false;
         $.ajax({
-            url: "https://perezprogramming.com/upload.php",
+            url: '/hornReport/upload.php',
             type: 'POST',
             data: upload,
             contentType: false,
