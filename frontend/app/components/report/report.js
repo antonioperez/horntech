@@ -4,7 +4,6 @@
     .module('app').directive('chart', function () {
       return {
         link: function (scope, elem, attrs) {
-          console.log(scope.graphConfig);
           var ctx = document.getElementById("graphOutput").getContext("2d");
           window.myLine = new Chart(ctx, scope.graphConfig);
         }
@@ -119,12 +118,6 @@
           {
             text: 'Web: www.horn-technologies.com | e-mail: info@horn-technologies.com',
             style: 'small',
-            alignment: 'center'
-          },
-          " ", " ",
-          {
-            text: 'Fumigation Certificate',
-            style: 'subheader',
             alignment: 'center'
           },
           " ", " ",
@@ -527,21 +520,21 @@
 
       var startDate = moment(new Date(8640000000000000));
       var endDate = moment(new Date(-8640000000000000));
-      if ($scope.zoneModel.zone1) {
+      if ($scope.zoneModel.zone1.length > -1) {
         var tempStart = $scope.zone1[0].t
         var tempEnd = $scope.zone1[$scope.zone1.length - 1].t;
         startDate = moment.min(tempStart, startDate);
         endDate = moment.max(tempEnd, endDate);
       }
 
-      if ($scope.zoneModel.zone2) {
+      if ($scope.zoneModel.zone2.length > -1) {
         var tempStart = $scope.zone2[0].t
         var tempEnd = $scope.zone2[$scope.zone2.length - 1].t;
         startDate = moment.min(tempStart, startDate);
         endDate = moment.max(tempEnd, endDate);   
       }
       
-      if ($scope.zoneModel.zone3) {
+      if ($scope.zoneModel.zone3.length > -1) {
         var tempStart = $scope.zone3[0].t
         var tempEnd = $scope.zone3[$scope.zone3.length - 1].t;
         startDate = moment.min(tempStart, startDate);
