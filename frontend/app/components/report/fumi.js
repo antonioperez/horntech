@@ -1,15 +1,5 @@
 (function () {
 
-	roomLotTable = {
-		layout: 'headerLineOnly',
-		style: "small",
-		table: {
-			body: [
-				['Room # | Lot #']
-			]
-		}
-	},
-
 	rawDataTable = {
 		layout: 'headerLineOnly',
 		style: "small",

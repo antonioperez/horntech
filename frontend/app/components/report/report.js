@@ -238,7 +238,7 @@
             var obj = fumiForm.content[idx];
             if (obj.hasOwnProperty('id') && obj.id === prop) {
               if (obj.id === 'container' & $scope.formValues.container.length > 1) {
-                $scope.formValues.container.forEach(element => {
+                $scope.formValues.container.forEach(function(element) {
                   fumiForm.content[idx].table.body.push([element]);
                 });
               } else {
