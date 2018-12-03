@@ -15,9 +15,18 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">ROOM#/LOT#</label>
+            <label class="col-sm-2 control-label">ROOM# | LOT#</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control"  ng-model="formValues.container">
+                <input type="text" class="form-control"  ng-model="formValues.container[0]" placeholder = "Room 1 | Lot 1">
+                <br>
+                <input type="text" class="form-control"  ng-model="formValues.container[1]" placeholder = "Room 2 | Lot 2">
+                <br>
+                <input type="text" class="form-control"  ng-model="formValues.container[2]" placeholder = "Room 3 | Lot 3">
+                <br>
+                <input type="text" class="form-control"  ng-model="formValues.container[3]" placeholder = "Room 4 | Lot 4">
+                <br>
+                <input type="text" class="form-control"  ng-model="formValues.container[4]" placeholder = "Room 5 | Lot 5">
+                <hr>
             </div>
         </div>
         <div class="form-group">
@@ -72,6 +81,12 @@
             <label class="col-sm-2 control-label">FUMIGATOR</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control"  ng-model="formValues.fumigator">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">NOTES</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" ng-model="formValues.notes" ></textarea>
             </div>
         </div>
         <div class="hr-line-dashed"></div>

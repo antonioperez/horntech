@@ -46,7 +46,7 @@
     $scope.formValues = {
       treatment: "",
       customer: "",
-      container: "",
+      container: [],
       commodity: "",
       fumigant: "",
       dosage: "",
@@ -137,7 +137,13 @@
           " ",
           {
             id: "container",
-            text: "ROOM#/LOT#: "
+            layout: 'headerLineOnly',
+            table: {
+              headerRows: 1,
+              body: [
+                [{text: 'Room # | Lot #', style: 'tableHeader'}],
+              ]
+            }
           },
           " ", " ",
           {
@@ -184,6 +190,11 @@
             id: "fumigator",
             text: "FUMIGATOR: "
           },
+          " ", 
+          {
+            id: "notes",
+            text: "NOTES: "
+          },
           " ", " ", " ", " ",
           {
             text: "________________________________",
@@ -226,7 +237,13 @@
           for (var idx in fumiForm.content) {
             var obj = fumiForm.content[idx];
             if (obj.hasOwnProperty('id') && obj.id === prop) {
-              fumiForm.content[idx].text += $scope.formValues[prop];
+              if (obj.id === 'container' & $scope.formValues.container.length > 1) {
+                $scope.formValues.container.forEach(element => {
+                  fumiForm.content[idx].table.body.push([element]);
+                });
+              } else {
+                fumiForm.content[idx].text += $scope.formValues[prop];
+              }
             }
           }
         }
@@ -247,8 +264,6 @@
       });
 
       fumiForm.content.push(rawDataTable);
-
-      
       var doc = pdfMake.createPdf(fumiForm);
       $scope.loading = false;
       doc.getBlob(function (data) {
@@ -310,17 +325,18 @@
           row[3] = parseInt(row[3].replace(/,/g, '.'));
           row[4] = parseInt(row[4].replace(/,/g, '.'));
 
-          if (isNaN(row[2])) {
-            row[2] = 0;
+          if (isNaN(row[2]) | row[2] < 1) {
+            row[2] = "";
           }
 
-          if (isNaN(row[3])) {
-            row[3] = 0;
+          if (isNaN(row[3]) | row[3] < 1) {
+            row[3] = "";
           }
 
-          if (isNaN(row[4])) {
-            row[4] = 0;
+          if (isNaN(row[4]) | row[4] < 1) {
+            row[4] = "";
           }
+
           var dataRow = [date.format('LLL'), row[2], row[3], row[4]];
           rawDataTable.table.body.push(dataRow);
           $scope.dataRows.push(row);
