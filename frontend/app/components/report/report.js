@@ -461,7 +461,7 @@
                 var tempStart = null;
                 var dataset = ci.getDatasetMeta(indx);
                 
-                if (dataset.hidden === null) {
+                if (dataset.hidden === null) {                  
                   if (indx == 0 && $scope.zoneModel.zone1){
                     dates = $scope.zone1.map(function(obj) { 
                       return obj.t;
@@ -509,14 +509,12 @@
     }
 
     $scope.generateReport = function () {
-      var dates = [];
-  
+      
       $scope.dataRows.forEach(function (data) {
         var date = moment(data[0], 'LLL');
         data[0] = date;
-        dates.push(date);
 
-        if ($scope.zoneModel.zone1 && data[2] > 0) {
+        if ($scope.zoneModel.zone1 && data[2] > 0) {          
           $scope.zone1.push({
             t: date,
             y: data[2]
@@ -540,21 +538,22 @@
 
       var startDate = moment(new Date(8640000000000000));
       var endDate = moment(new Date(-8640000000000000));
-      if ($scope.zoneModel.zone1.length > -1) {
+
+      if ($scope.zoneModel.zone1 && typeof $scope.zone1[0] != 'undefined') {
         var tempStart = $scope.zone1[0].t
         var tempEnd = $scope.zone1[$scope.zone1.length - 1].t;
         startDate = moment.min(tempStart, startDate);
         endDate = moment.max(tempEnd, endDate);
       }
 
-      if ($scope.zoneModel.zone2.length > -1) {
+      if ($scope.zoneModel.zone2 && typeof $scope.zone2[0] != 'undefined') {
         var tempStart = $scope.zone2[0].t
         var tempEnd = $scope.zone2[$scope.zone2.length - 1].t;
         startDate = moment.min(tempStart, startDate);
         endDate = moment.max(tempEnd, endDate);   
       }
       
-      if ($scope.zoneModel.zone3.length > -1) {
+      if ($scope.zoneModel.zone3 && typeof $scope.zone3[0] != 'undefined') {
         var tempStart = $scope.zone3[0].t
         var tempEnd = $scope.zone3[$scope.zone3.length - 1].t;
         startDate = moment.min(tempStart, startDate);
