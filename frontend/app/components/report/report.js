@@ -325,20 +325,24 @@
           row[3] = parseInt(row[3].replace(/,/g, '.'));
           row[4] = parseInt(row[4].replace(/,/g, '.'));
 
-          if (isNaN(row[2]) | row[2] < 1) {
-            row[2] = "";
+          var tempRow = row.slice();
+          if (isNaN(row[2]) | row[2] < 1 | row[2] == '') {
+            row[2] = 0;
+            tempRow[2] = '';
           }
 
-          if (isNaN(row[3]) | row[3] < 1) {
-            row[3] = "";
+          if (isNaN(row[3]) | row[3] < 1 | row[3] == '') {
+            row[3] = 0;
+            tempRow[3] = '';
           }
 
-          if (isNaN(row[4]) | row[4] < 1) {
-            row[4] = "";
+          if (isNaN(row[4]) | row[4] < 1 | row[4] == '') {
+            row[4] = 0;
+            tempRow[4] = '';
           }
 
-          var dataRow = [date.format('LLL'), row[2], row[3], row[4]];
-          rawDataTable.table.body.push(dataRow);
+          var rawDataRow = [date.format('LLL'), tempRow[2], tempRow[3], tempRow[4]];
+          rawDataTable.table.body.push(rawDataRow);
           $scope.dataRows.push(row);
           self._render();
           $scope.$apply();
