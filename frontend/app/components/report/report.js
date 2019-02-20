@@ -243,7 +243,7 @@
                 $scope.formValues.container.forEach(function(element, index) {
                   var room = $scope.formValues.roomContainer[index].trim(); 
                   var lot = $scope.formValues.container[index].trim();
-                  var zone = `Zone ${element} - Room ${room} - Lot ${lot}`;
+                  var zone = "Zone " + element + " - Room " + room + " - Lot " + lot;
 
                   if (index == 1 && element == "") {
                     if (lot != '.' && room != '.') {
