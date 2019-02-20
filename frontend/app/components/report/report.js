@@ -141,7 +141,7 @@
             table: {
               headerRows: 1,
               body: [
-                [{text: 'Room # | Lot #', style: 'tableHeader'}],
+                [{text: 'Zone # | Room # | Lot #', style: 'tableHeader'}],
               ]
             }
           },
@@ -238,9 +238,25 @@
             var obj = fumiForm.content[idx];
             if (obj.hasOwnProperty('id') && obj.id === prop) {
               if (obj.id === 'container' & $scope.formValues.container.length > 1) {
-                $scope.formValues.container.forEach(function(element) {
-                  fumiForm.content[idx].table.body.push([element]);
+                
+                var elements = [];
+                $scope.formValues.container.forEach(function(element, index) {
+                  var room = $scope.formValues.roomContainer[index].trim(); 
+                  var lot = $scope.formValues.container[index].trim();
+                  var zone = `Zone ${element} - Room ${room} - Lot ${lot}`;
+
+                  if (index == 1 && element == "") {
+                    if (lot != '.' && room != '.') {
+                      elements.pop();
+                    }
+                    return;
+                  }
+                  elements.push([zone]);
                 });
+
+                if (elements.length > 0) {
+                  fumiForm.content[idx].table.body = fumiForm.content[idx].table.body.concat(elements);
+                }
               } else {
                 fumiForm.content[idx].text += $scope.formValues[prop];
               }
