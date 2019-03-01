@@ -237,23 +237,22 @@
           for (var idx in fumiForm.content) {
             var obj = fumiForm.content[idx];
             if (obj.hasOwnProperty('id') && obj.id === prop) {
-              if (obj.id === 'container' & $scope.formValues.container.length > 1) {
+              console.log($scope.formValues.container);
+              if (obj.id === 'container') {
                 
                 var elements = [];
                 $scope.formValues.container.forEach(function(element, index) {
                   var room = $scope.formValues.roomContainer[index].trim(); 
-                  var lot = $scope.formValues.container[index].trim();
+                  var lot = $scope.formValues.lotContainer[index].trim();
                   var zone = "Zone " + element + " - Room " + room + " - Lot " + lot;
-
-                  if (index == 1 && element == "") {
-                    if (lot != '.' && room != '.') {
-                      elements.pop();
-                    }
-                    return;
-                  }
                   elements.push([zone]);
                 });
 
+                if (elements.length == 2) {
+                  if ($scope.formValues.container[1] != '.' && $scope.formValues.container[1] != '.') {
+                    elements.pop();
+                  }
+                } 
                 if (elements.length > 0) {
                   fumiForm.content[idx].table.body = fumiForm.content[idx].table.body.concat(elements);
                 }
