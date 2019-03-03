@@ -57,6 +57,8 @@
       exposure: "",
       certGas: "",
       fumigator: "",
+      customStartTime: "",
+      customEndTime: ""
     }
 
     $scope.zoneModel = {
@@ -237,9 +239,7 @@
           for (var idx in fumiForm.content) {
             var obj = fumiForm.content[idx];
             if (obj.hasOwnProperty('id') && obj.id === prop) {
-              console.log($scope.formValues.container);
               if (obj.id === 'container') {
-                
                 var elements = [];
                 $scope.formValues.container.forEach(function(element, index) {
                   var room = $scope.formValues.roomContainer[index].trim(); 
@@ -248,11 +248,6 @@
                   elements.push([zone]);
                 });
 
-                if (elements.length == 2) {
-                  if ($scope.formValues.container[1] != '.' && $scope.formValues.container[1] != '.') {
-                    elements.pop();
-                  }
-                } 
                 if (elements.length > 0) {
                   fumiForm.content[idx].table.body = fumiForm.content[idx].table.body.concat(elements);
                 }
@@ -263,6 +258,9 @@
           }
         }
       }
+
+      $scope.formValues.startTime = $scope.formValues.customStartTime;
+      $scope.formValues.endTime = $scope.formValues.customEndTime;
 
       var canvas = document.getElementById('graphOutput');
       var ctx = canvas.getContext('2d');
@@ -577,7 +575,6 @@
       
       var dayDiff = Math.abs(startDate.diff(endDate, 'days', true));
       $scope.updateTimes(startDate, endDate);
-
       if (dayDiff > 60) {
         $scope.graphConfig.options.scales.xAxes[0].time.unit = 'week';
         $scope.graphConfig.options.scales.xAxes[0].time.round = 'day';
