@@ -239,7 +239,11 @@
           for (var idx in fumiForm.content) {
             var obj = fumiForm.content[idx];
             if (obj.hasOwnProperty('id') && obj.id === prop) {
-              if (obj.id === 'container') {
+              if (obj.id == 'endTime' ) {
+                fumiForm.content[idx].text += $scope.formValues.customEndTime;
+              } else if (obj.id == 'startTime'){
+                fumiForm.content[idx].text += $scope.formValues.customStartTime;
+              }else if (obj.id === 'container') {
                 var elements = [];
                 $scope.formValues.container.forEach(function(element, index) {
                   var room = $scope.formValues.roomContainer[index].trim(); 
